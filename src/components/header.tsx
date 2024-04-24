@@ -1,33 +1,16 @@
-import Cta from "../components/cta";
+import { Image } from "@yext/pages-components";
+import Ce_site from "../types/site";
 
-type Link = {
-  label: string;
-  url: string;
-};
-
-const links: Link[] = [
-  {
-    label: "Home",
-    url: "/",
-  },
-  {
-    label: "About",
-    url: "/turtlehead-tacos",
-  },
-];
-
-const Header = () => {
-  const linkDoms = links.map((link) => (
-    <div key={link.label}>
-      <a href={link.url} target="_blank" rel="noreferrer">
-        {link.label}
-      </a>
-    </div>
-  ));
+const Header = (_site: Ce_site) => {
+  const { c_header } = _site;
 
   return (
     <>
-      <img src="https://i.imgur.com/SxcJgmW.png" alt="" />
+      {c_header ? (
+        <Image image={c_header} width={100} />
+      ) : (
+        <img src="https://i.imgur.com/SxcJgmW.png" alt="" />
+      )}
     </>
   );
 };

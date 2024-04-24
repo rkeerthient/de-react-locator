@@ -25,7 +25,6 @@ const getLocationHTML = (location: Location) => {
       <p>{`${address.city}, ${address.region}, ${address.postalCode}`}</p>
     </div>
   );
-  console.log(html);
 
   return ReactDOM.renderToString(html);
 };

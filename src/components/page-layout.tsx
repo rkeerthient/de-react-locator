@@ -1,4 +1,3 @@
-import Site from "../types/Site";
 import Header from "./header";
 import Footer from "./footer";
 import {
@@ -11,8 +10,9 @@ import { useState } from "react";
 import { ChatHeadlessProvider, ChatConfig } from "@yext/chat-headless-react";
 import "@yext/chat-ui-react/bundle.css";
 import { ChatPopUp } from "@yext/chat-ui-react";
+import Ce_site from "../types/site";
 type Props = {
-  _site?: Site;
+  _site?: Ce_site;
   children?: React.ReactNode;
 };
 // const chatConfig: ChatConfig = {

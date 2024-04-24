@@ -1,6 +1,3 @@
-/**
- * This is an example of how to create a static template that uses getStaticProps to retrieve data.
- */
 import {
   GetHeadConfig,
   HeadConfig,
@@ -41,6 +38,8 @@ export const getHeadConfig: GetHeadConfig<
 };
 
 const Search: Template<TemplateRenderProps> = ({ document }) => {
+  console.log(JSON.stringify(document._site));
+
   return (
     <LocationsProvider>
       <PageLayout>

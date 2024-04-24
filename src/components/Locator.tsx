@@ -25,6 +25,7 @@ import Loader from "./Loader";
 import LocationCard from "./LocationCard";
 import MapPin from "./MapPin";
 import { useLocationsContext } from "../common/LocationsContext";
+import { IoIosClose } from "react-icons/io";
 
 type verticalKey = {
   verticalKey: string;
@@ -34,6 +35,10 @@ const Locator = ({ verticalKey }: verticalKey) => {
   const filters = useSearchState((state) => state.filters.static);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedLocationId, setSelectedLocationId] = useState("");
+  const [showFacets, setShowFacets] = useState(false);
+  const facets = useSearchState((state) => state.filters.facets);
+
+  const nr = facets && facets.map((item) => item.options.length >= 1);
   const {
     selectedLocationId: _selectedLocationId,
     setSelectedLocationId: _setSelectedLocationId,
@@ -99,24 +104,10 @@ const Locator = ({ verticalKey }: verticalKey) => {
       <div className="centered-container">
         <div className="flex gap-8 w-full items-center my-6">
           <SearchBar
-            customCssClasses={{ searchBarContainer: "custSearch w-1/3 ml-8" }}
+            customCssClasses={{ searchBarContainer: "  w-full ml-8" }}
             placeholder="Enter an address, zip code, or city and state"
             onSearch={handleSearch}
           />
-          <div className="w-1/2">
-            <Facets
-              customCssClasses={{
-                optionsContainer: "grid grid-cols-3 gap-2 ",
-              }}
-            >
-              <StandardFacet
-                showOptionCounts={false}
-                collapsible={false}
-                fieldId="c_narrowSearch"
-                label="Narrow your search"
-              />
-            </Facets>
-          </div>
         </div>
       </div>
       <>
@@ -125,33 +116,67 @@ const Locator = ({ verticalKey }: verticalKey) => {
             className="flex flex-col w-[40%] p-4 overflow-scroll relative"
             style={{ height: "95vh" }}
           >
-            <>
-              <div>
-                <ResultsCount />
-                <AppliedFilters />
-                {isLoading ? (
-                  <div className="h-screen">
-                    <Loader />
+            <div
+              className={`hover:cursor-pointer px-4 py-2 font-bold text-sm bg-[#d61f28] text-white w-fit ${nr && nr.every((v) => v === true) ? `block` : `hidden`}`}
+              onClick={(e) => setShowFacets(!showFacets)}
+            >
+              Facets & Filters
+            </div>
+            {showFacets ? (
+              <div className="absolute inset-0 bg-white h-[95vh]">
+                <IoIosClose
+                  onClick={(e) => setShowFacets(false)}
+                  className="ml-auto h-8 w-8 mr-4 hover:cursor-pointer hover:border"
+                />
+                <Facets
+                  customCssClasses={{ facetsContainer: "mr-10" }}
+                  searchOnChange={true}
+                />
+                <div className="flex flex-row gap-4 mb-8">
+                  <div
+                    className="hover:cursor-pointer px-4 py-1 mt-4 bg-[#d61f28] font-bold text-white w-fit"
+                    onClick={(e) => setShowFacets(!showFacets)}
+                  >
+                    Apply
                   </div>
-                ) : (
-                  <VerticalResults
-                    CardComponent={LocationCard}
-                    customCssClasses={{
-                      verticalResultsContainer: "flex flex-col gap-4 bg-white",
-                    }}
-                  />
-                )}
-                <div className="mt-4">
-                  <Pagination />
-                  <Geolocation
-                    customCssClasses={{
-                      iconContainer: "none",
-                      geolocationContainer: "flex flex-col lg:flex-col",
-                    }}
-                  />
+                  <div
+                    className="hover:cursor-pointer px-4 py-1 mt-4 text-[#027da5] w-fit hover:underline"
+                    onClick={(e) => setShowFacets(false)}
+                  >
+                    Cancel
+                  </div>
                 </div>
               </div>
-            </>
+            ) : (
+              <>
+                <div>
+                  <ResultsCount />
+                  <AppliedFilters />
+                  {isLoading ? (
+                    <div className="h-screen">
+                      <Loader />
+                    </div>
+                  ) : (
+                    <VerticalResults
+                      CardComponent={LocationCard}
+                      customCssClasses={{
+                        verticalResultsContainer:
+                          "flex flex-col gap-4 bg-white",
+                      }}
+                    />
+                  )}
+                  <div className="mt-4">
+                    <Pagination />
+                    <Geolocation
+                      customCssClasses={{
+                        iconContainer: "none",
+                        geolocationContainer: "flex flex-col lg:flex-col",
+                      }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
           <div className=" w-[60%] h-screen">
             <MapboxMap
