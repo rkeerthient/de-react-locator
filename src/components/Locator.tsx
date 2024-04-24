@@ -123,7 +123,7 @@ const Locator = ({ verticalKey }: verticalKey) => {
               Facets & Filters
             </div>
             {showFacets ? (
-              <div className="absolute inset-0 bg-white h-[95vh]">
+              <div className="absolute inset-0 bg-white h-[95vh] px-4">
                 <IoIosClose
                   onClick={(e) => setShowFacets(false)}
                   className="ml-auto h-8 w-8 mr-4 hover:cursor-pointer hover:border"
