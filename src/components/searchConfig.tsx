@@ -1,5 +1,3 @@
-// import { CloudRegion, Environment } from "@yext/search-headless-react";
-
 import { Environment } from "@yext/search-headless-react";
 
 const searchConfig = {
